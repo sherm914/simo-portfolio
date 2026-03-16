@@ -34,7 +34,7 @@ export default function AdminDashboard() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [tempOrderedItems, setTempOrderedItems] = useState<PortfolioItem[]>([]);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [activeTab, setActiveTab] = useState<'portfolio' | 'contact-page'>('portfolio');
+  const [activeTab, setActiveTab] = useState<'portfolio' | 'contact-page' | 'reel'>('portfolio');
 
   const categories = ['Directing', 'Editorial', 'VFX', 'Production'] as const;
   const types = ['MUSIC VIDEO', 'COMMERCIAL', 'NARRATIVE'] as const;
