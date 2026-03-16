@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Axion Kong';
+  src: url('/fonts/axion-kong.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -24,3 +31,55 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* outlined heading style for outline-only title */
+.outline-title {
+  color: transparent;
+  -webkit-text-stroke-width: 2px; /* thicker stroke for better visibility */
+  -webkit-text-stroke-color: white;
+}
+
+/* button glow animation */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* star shape button */
+.star-button {
+  clip-path: polygon(
+    50% 0%,      /* top point */
+    61% 35%,     /* top right inner */
+    100% 35%,    /* top right corner */
+    68% 57%,     /* right inner */
+    79% 91%,     /* bottom right point */
+    50% 70%,     /* bottom inner */
+    21% 91%,     /* bottom left point */
+    32% 57%,     /* left inner */
+    0% 35%,      /* top left corner */
+    39% 35%      /* top left inner */
+  );
+}
+
