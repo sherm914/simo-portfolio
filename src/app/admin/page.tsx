@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import ContactPageEditor from '@/components/admin/ContactPageEditor';
+import ReelEditor from '@/components/admin/ReelEditor';
 import SupabaseUploadButton from '@/components/admin/SupabaseUploadButton';
 import type { PortfolioItem } from '@/types/database';
 
@@ -648,12 +649,29 @@ export default function AdminDashboard() {
           >
             Contact Page
           </button>
+          <button
+            onClick={() => setActiveTab('reel')}
+            className={`px-4 py-2 font-semibold transition ${
+              activeTab === 'reel'
+                ? 'text-white border-b-2 border-white mb-[-1px]'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Landing Reel
+          </button>
         </div>
 
         {/* Contact Page Tab */}
         {activeTab === 'contact-page' && (
           <div className="mb-12">
             <ContactPageEditor />
+          </div>
+        )}
+
+        {/* Reel Tab */}
+        {activeTab === 'reel' && (
+          <div className="mb-12">
+            <ReelEditor />
           </div>
         )}
 
