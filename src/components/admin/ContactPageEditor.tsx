@@ -1,16 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { CldUploadWidget } from 'next-cloudinary';
 import { useContactPageContent } from '@/hooks/useContactPageContent';
-import { migrateCloudinaryToSupabase } from '@/lib/storageUpload';
+import SupabaseUploadButton from '@/components/admin/SupabaseUploadButton';
 import type { ContactPageContent } from '@/types/database';
 
 export default function ContactPageEditor() {
   const { content, loading, updateContent } = useContactPageContent();
   const [formData, setFormData] = useState<Partial<ContactPageContent>>({});
   const [saving, setSaving] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [newSkill, setNewSkill] = useState('');
@@ -119,62 +117,22 @@ export default function ContactPageEditor() {
             className="w-48 h-48 object-contain rounded-lg mb-4"
           />
         )}
-        <CldUploadWidget
-          uploadPreset="simo_portfolio_images"
-          onSuccess={async (result: any) => {
-            if (result.event === 'success') {
-              setUploadingImage(true);
-              setErrorMessage('');
-              try {
-                // Get the Cloudinary URL
-                const cloudinaryUrl = result.info.secure_url;
-                console.log('Image uploaded to Cloudinary, migrating to Supabase...');
-                
-                // Upload to Supabase Storage
-                const supabaseUrl = await migrateCloudinaryToSupabase(
-                  cloudinaryUrl,
-                  'profile'
-                );
-                
-                // Update form with Supabase URL
-                setFormData((prev) => ({
-                  ...prev,
-                  profile_image_url: supabaseUrl,
-                }));
-                
-                console.log('Image successfully migrated to Supabase:', supabaseUrl);
-              } catch (error) {
-                console.error('Failed to migrate image:', error);
-                setErrorMessage('Failed to save image to storage. Please try again.');
-                // Fallback to Cloudinary URL if migration fails
-                setFormData((prev) => ({
-                  ...prev,
-                  profile_image_url: result.info.secure_url,
-                }));
-              } finally {
-                setUploadingImage(false);
-              }
-            }
+        <SupabaseUploadButton
+          fileType="image"
+          label="Profile Image"
+          onUploadSuccess={(url) => {
+            setFormData((prev) => ({
+              ...prev,
+              profile_image_url: url,
+            }));
+            setSuccessMessage('Profile image uploaded successfully!');
+            setTimeout(() => setSuccessMessage(''), 3000);
           }}
-          onError={(error: any) => {
-            console.error('Image upload error:', error);
+          onUploadError={(error) => {
+            console.error('Failed to upload image:', error);
             setErrorMessage('Failed to upload image. Please try again.');
           }}
-          options={{
-            cropping: false,
-            multiple: false,
-          }}
-        >
-          {({ open }) => (
-            <button
-              onClick={() => open()}
-              disabled={uploadingImage}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
-            >
-              {uploadingImage ? 'Uploading...' : 'Upload Profile Image'}
-            </button>
-          )}
-        </CldUploadWidget>
+        />
       </div>
 
       {/* About Text */}
