@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import { useReel } from '@/hooks/useReel';
 
 // inline typewriter/fade effect
 function useTypewriter(words: string[], speed = 120, pauseAfter = 1200) {
@@ -40,7 +41,9 @@ function useTypewriter(words: string[], speed = 120, pauseAfter = 1200) {
 
 export default function Hero() {
   const taglines = ['Story First. Always.', 'Director.', 'Editor.', 'VFX Generalist.', 'Producer.'];
-  const { text: typed, fade } = useTypewriter(taglines, 60);  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const { text: typed, fade } = useTypewriter(taglines, 60);
+  const { reel } = useReel();
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hovering, setHovering] = useState(false);
   const [velocity, setVelocity] = useState(0);
   const prevPosRef = useRef({ x: 0, y: 0 });
@@ -183,14 +186,16 @@ export default function Hero() {
       className="relative pt-40 pb-8 px-6 bg-black min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Reel preview background video */}
-      <video
-        src="/reel.mp4"
-        className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
-        autoPlay
-        muted
-        loop
-        playsInline
-      />
+      {reel && (
+        <video
+          src={reel}
+          className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      )}
       {/* Cinematic background elements */}
       <div className="absolute inset-0 opacity-40">
         <div
