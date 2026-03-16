@@ -1,3 +1,5 @@
+'use client';
+
 import { useReel } from '@/hooks/useReel';
 
 export default function ReelSection() {
