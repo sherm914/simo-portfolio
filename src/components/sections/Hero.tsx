@@ -194,6 +194,8 @@ export default function Hero() {
           muted
           loop
           playsInline
+          preload="auto"
+          fetchPriority="high"
         />
       )}
       {/* Cinematic background elements */}
