@@ -54,8 +54,6 @@ export default function SelectedWork() {
       <div className="max-w-full mx-auto">
         <h1 className="text-3xl font-bold text-white mb-8 px-6 text-center whitespace-nowrap">SELECTED WORK</h1>
 
-        {loading && <div className="text-center text-zinc-400">Loading...</div>}
-
         {/* Portfolio grid */}
         <div 
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
@@ -84,12 +82,6 @@ export default function SelectedWork() {
             <div className="text-white text-sm font-medium">Let's Work</div>
           </a>
         </div>
-
-        {items.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-zinc-400 text-lg">No projects found in this category.</p>
-          </div>
-        )}
       </div>
     </section>
   );

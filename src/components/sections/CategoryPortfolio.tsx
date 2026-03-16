@@ -61,8 +61,6 @@ export default function CategoryPortfolio({ categoryName, categoryTitle }: Categ
       <div className="max-w-full mx-auto">
         <h1 className="sm:hidden text-3xl font-bold text-white mb-8 px-6 text-center whitespace-nowrap">{categoryTitle}</h1>
 
-        {loading && <div className="text-center text-zinc-400 mb-8">Loading...</div>}
-
         {/* Filter buttons */}
         {!loading && filtered_items.length > 0 && (
           <div>
@@ -107,12 +105,6 @@ export default function CategoryPortfolio({ categoryName, categoryTitle }: Categ
                 <div className="text-white text-sm font-medium">Let's Work</div>
               </a>
             </div>
-          </div>
-        )}
-
-        {filtered.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-zinc-400 text-lg">No projects found in this category.</p>
           </div>
         )}
       </div>
