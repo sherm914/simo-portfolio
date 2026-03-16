@@ -741,7 +741,7 @@ export default function AdminDashboard() {
                       label="Upload Video"
                       folder="portfolio/videos"
                       fileType="video"
-                      maxFileSize={100 * 1024 * 1024}
+                      maxFileSize={150 * 1024 * 1024}
                       onSuccess={(url) => {
                         setEditFormData((prev) => {
                           if (!prev) return prev;
@@ -892,7 +892,7 @@ export default function AdminDashboard() {
                           label={`BTS Video ${index + 1}`}
                           folder="portfolio/bts-videos"
                           fileType="video"
-                          maxFileSize={100 * 1024 * 1024}
+                          maxFileSize={150 * 1024 * 1024}
                           onSuccess={(url) => {
                             setEditFormData((prev) => {
                               if (!prev) return prev;
@@ -1041,7 +1041,7 @@ export default function AdminDashboard() {
                       label="Upload Video"
                       folder="portfolio/videos"
                       fileType="video"
-                      maxFileSize={100 * 1024 * 1024}
+                      maxFileSize={150 * 1024 * 1024}
                       onSuccess={(url) => {
                         setFormData((prev) => ({
                           ...prev,
@@ -1189,7 +1189,7 @@ export default function AdminDashboard() {
                           label={`BTS Video ${index + 1}`}
                           folder="portfolio/bts-videos"
                           fileType="video"
-                          maxFileSize={100 * 1024 * 1024}
+                          maxFileSize={150 * 1024 * 1024}
                           onSuccess={(url) => {
                             const newVideos = [...formData.bts_videos];
                             newVideos[index] = url;
