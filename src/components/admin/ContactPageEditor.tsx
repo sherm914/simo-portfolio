@@ -118,9 +118,10 @@ export default function ContactPageEditor() {
           />
         )}
         <SupabaseUploadButton
-          fileType="image"
           label="Profile Image"
-          onUploadSuccess={(url) => {
+          folder="contact-page"
+          fileType="image"
+          onSuccess={(url) => {
             setFormData((prev) => ({
               ...prev,
               profile_image_url: url,
@@ -128,7 +129,7 @@ export default function ContactPageEditor() {
             setSuccessMessage('Profile image uploaded successfully!');
             setTimeout(() => setSuccessMessage(''), 3000);
           }}
-          onUploadError={(error) => {
+          onError={(error) => {
             console.error('Failed to upload image:', error);
             setErrorMessage('Failed to upload image. Please try again.');
           }}
