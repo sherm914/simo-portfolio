@@ -5,6 +5,7 @@ export const useReel = () => {
   const [reel, setReel] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [reelId, setReelId] = useState<string>('');
 
   useEffect(() => {
     fetchReel();
@@ -15,10 +16,11 @@ export const useReel = () => {
       setLoading(true);
       const { data, error: err } = await supabase
         .from('site_reel')
-        .select('video_url')
+        .select('id, video_url')
         .single();
 
       if (err) throw err;
+      setReelId(data?.id || '');
       setReel(data?.video_url || '');
       setError(null);
     } catch (err) {
@@ -32,10 +34,12 @@ export const useReel = () => {
   const updateReel = async (videoUrl: string) => {
     try {
       setLoading(true);
+      if (!reelId) throw new Error('Reel ID not found');
+
       const { error: err } = await supabase
         .from('site_reel')
         .update({ video_url: videoUrl, updated_at: new Date().toISOString() })
-        .eq('id', (await supabase.from('site_reel').select('id').single()).data?.id);
+        .eq('id', reelId);
 
       if (err) throw err;
       setReel(videoUrl);
