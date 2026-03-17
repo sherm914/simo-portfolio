@@ -1,103 +1,77 @@
-'use client';
-
-import { useEffect, useState, useRef } from 'react';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { Metadata } from 'next';
+import { createClient } from '@supabase/supabase-js';
+import { PortfolioDetailClient } from './client';
 import type { PortfolioItem } from '@/types/database';
 
-export default function PortfolioDetail() {
-  const params = useParams();
-  const slug = params?.slug as string;
-  const [project, setProject] = useState<PortfolioItem | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [showPlayButton, setShowPlayButton] = useState(false);
-  const [btsImageLoaded, setBtsImageLoaded] = useState<Record<number, boolean>>({});
-  const videoRef = useRef<HTMLVideoElement>(null);
+// Initialize Supabase client for server-side data fetching
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
-  useEffect(() => {
-    if (!slug) return;
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  try {
+    // Fetch project data for metadata
+    const { data: project } = await supabase
+      .from('portfolio_items')
+      .select('*')
+      .eq('slug', params.slug)
+      .single();
 
-    const fetchProject = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const { data, error: dbError } = await supabase
-          .from('portfolio_items')
-          .select('*')
-          .eq('slug', slug)
-          .single();
-
-        if (dbError) {
-          console.error('Database error:', dbError.message);
-          setError(dbError.message || 'Failed to fetch project');
-          setProject(null);
-          return;
-        }
-
-        setProject(data);
-      } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : 'Unknown error';
-        console.error('Failed to fetch project:', errorMsg);
-        setError(errorMsg);
-        setProject(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProject();
-  }, [slug]);
-
-  useEffect(() => {
-    if (!project?.video_url || !videoRef.current) return;
-
-    // Check if video is playing after a short delay
-    const timer = setTimeout(() => {
-      if (videoRef.current?.paused) {
-        setShowPlayButton(true);
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [project]);
-
-  const handlePlayClick = () => {
-    if (videoRef.current) {
-      videoRef.current.play();
-      setShowPlayButton(false);
+    if (!project) {
+      return {
+        title: 'Project Not Found',
+        description: 'This project could not be found.',
+      };
     }
-  };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <p>Loading...</p>
-      </div>
-    );
+    const baseUrl = 'https://simomotsa.com';
+    const projectUrl = `${baseUrl}/site/portfolio/${project.slug}`;
+    
+    return {
+      title: `${project.title} | Simo Motsa`,
+      description: project.description || `${project.title} - A ${project.type} by Simo Motsa`,
+      alternates: {
+        canonical: projectUrl,
+      },
+      openGraph: {
+        title: project.title,
+        description: project.description || `${project.title} - A ${project.type} by Simo Motsa`,
+        type: 'website',
+        url: projectUrl,
+        images: project.image_url ? [
+          {
+            url: project.image_url,
+            width: 1200,
+            height: 630,
+            alt: project.title,
+          }
+        ] : [],
+        siteName: 'Simo Motsa',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: project.title,
+        description: project.description || `${project.title} - A ${project.type} by Simo Motsa`,
+        images: project.image_url ? [project.image_url] : [],
+      },
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Portfolio Project',
+      description: 'View Simo Motsa\'s portfolio project',
+    };
   }
+}
 
-  if (error || !project) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <div className="text-center">
-          <p className="text-xl mb-2">Sorry, project not found.</p>
-          {error && <p className="text-zinc-400 text-sm mb-4">{error}</p>}
-          <Link href="/site/selected-work" className="text-blue-400 underline">
-            ← Back to projects
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <main className="min-h-screen bg-black text-white px-6 pt-32 pb-20">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">{project.title}</h1>
-        <p className="text-zinc-300 mb-6">{project.description}</p>
+export default function PortfolioDetailPage() {
+  return <PortfolioDetailClient />;
+}
 
         {project.video_url && (
           <div className="mb-6">
