@@ -13,8 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Simo - Freelance Editor, VFX Generalist & Producer",
+  title: "Simo Motsa",
   description: "Showcase of video editing, VFX, motion graphics, and production work",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
