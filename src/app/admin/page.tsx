@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import ContactPageEditor from '@/components/admin/ContactPageEditor';
 import ReelEditor from '@/components/admin/ReelEditor';
 import SupabaseUploadButton from '@/components/admin/SupabaseUploadButton';
+import { logoutAdmin } from './actions';
 import type { PortfolioItem } from '@/types/database';
 
 export default function AdminDashboard() {
@@ -625,7 +626,15 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Admin Dashboard</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+          <button
+            onClick={() => logoutAdmin()}
+            className="px-4 py-2 rounded-lg bg-red-900 hover:bg-red-800 text-white font-semibold transition"
+          >
+            Logout
+          </button>
+        </div>
 
         {/* Tab Navigation */}
         <div className="flex gap-4 mb-8 border-b border-zinc-800">
