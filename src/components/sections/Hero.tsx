@@ -239,7 +239,7 @@ export default function Hero() {
 
         <h1
           ref={titleRef}
-          className="text-5xl sm:text-6xl md:text-8xl font-bold mb-6 leading-tight transition-transform duration-300 ease-out whitespace-nowrap overflow-hidden"
+          className="text-5xl sm:text-6xl md:text-8xl font-bold mb-6 leading-tight transition-transform duration-300 ease-out whitespace-nowrap"
           style={{ fontFamily: "'Axion Kong', sans-serif", letterSpacing: 'clamp(2px, 1vw, 5px)', ...titleStyle }}
         >
           SIMO MOTSA

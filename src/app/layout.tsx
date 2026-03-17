@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Simo Motsa",
   description: "Showcase of video editing, VFX, motion graphics, and production work",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/favicon.png",
   },
 };
 
