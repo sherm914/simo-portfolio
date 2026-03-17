@@ -18,10 +18,12 @@ export default function Portfolio() {
 
   // Debug: log when rendered items change
   useEffect(() => {
-    console.debug(`[Portfolio] Rendered: Featured=${featured.length}, Filtered=${filtered.length}, Total items in view=${featured.length + filtered.length}`);
-    if (filtered.length > 0) {
-      console.debug(`[Portfolio] Featured items:`, featured.map(p => ({ id: p.id, title: p.title })));
-      console.debug(`[Portfolio] Filtered items (${filter}):`, filtered.map(p => ({ id: p.id, title: p.title })));
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`[Portfolio] Rendered: Featured=${featured.length}, Filtered=${filtered.length}, Total items in view=${featured.length + filtered.length}`);
+      if (filtered.length > 0) {
+        console.debug(`[Portfolio] Featured items:`, featured.map(p => ({ id: p.id, title: p.title })));
+        console.debug(`[Portfolio] Filtered items (${filter}):`, filtered.map(p => ({ id: p.id, title: p.title })));
+      }
     }
   }, [filtered, featured, filter]);
 
@@ -39,9 +41,11 @@ export default function Portfolio() {
       }
     });
     
-    const closestItem = [...featured, ...others].find(item => item.id === closest);
-    const trackedIds = Array.from(distancesRef.current.keys()).join(', ');
-    console.debug(`[Portfolio] Closest: ${closestItem?.title || 'None'} (ID: ${closest}), Distance: ${closestDistance.toFixed(0)}px, Tracked: ${distancesRef.current.size} items [${trackedIds}]`);
+    if (process.env.NODE_ENV === 'development') {
+      const closestItem = [...featured, ...others].find(item => item.id === closest);
+      const trackedIds = Array.from(distancesRef.current.keys()).join(', ');
+      console.debug(`[Portfolio] Closest: ${closestItem?.title || 'None'} (ID: ${closest}), Distance: ${closestDistance.toFixed(0)}px, Tracked: ${distancesRef.current.size} items [${trackedIds}]`);
+    }
     
     setClosestItemId(closest);
   };
@@ -137,9 +141,13 @@ function PortfolioCardWrapperData({
 
   // Debug: log when wrapper mounts
   useEffect(() => {
-    console.debug(`[Portfolio] Wrapper mounted for: ${item.title} (ID: ${item.id})`);
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`[Portfolio] Wrapper mounted for: ${item.title} (ID: ${item.id})`);
+    }
     return () => {
-      console.debug(`[Portfolio] Wrapper unmounted for: ${item.title} (ID: ${item.id})`);
+      if (process.env.NODE_ENV === 'development') {
+        console.debug(`[Portfolio] Wrapper unmounted for: ${item.title} (ID: ${item.id})`);
+      }
     };
   }, [item.id, item.title]);
 

@@ -19,10 +19,12 @@ export function usePortfolioItems() {
 
         if (error) throw error;
         setItems(data || []);
-        console.debug(`[usePortfolioItems] Fetched ${data?.length || 0} total items from database`);
-        console.debug(`[usePortfolioItems] All items:`, data?.map(item => ({ id: item.id, title: item.title, featured: item.featured })));
-        const featuredItems = data?.filter(item => item.featured) || [];
-        console.debug(`[usePortfolioItems] Featured items (${featuredItems.length}):`, featuredItems.map(item => ({ id: item.id, title: item.title })));
+        if (process.env.NODE_ENV === 'development') {
+          console.debug(`[usePortfolioItems] Fetched ${data?.length || 0} total items from database`);
+          console.debug(`[usePortfolioItems] All items:`, data?.map(item => ({ id: item.id, title: item.title, featured: item.featured })));
+          const featuredItems = data?.filter(item => item.featured) || [];
+          console.debug(`[usePortfolioItems] Featured items (${featuredItems.length}):`, featuredItems.map(item => ({ id: item.id, title: item.title })));
+        }
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch portfolio items');

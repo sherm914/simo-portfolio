@@ -30,9 +30,11 @@ export default function CategoryPortfolio({ categoryName, categoryTitle }: Categ
 
   // Debug: log when rendered items change
   useEffect(() => {
-    console.debug(`[${categoryTitle}] Rendered: Total=${filtered_items.length}, Filtered=${filtered.length}`);
-    console.debug(`[${categoryTitle}] All items in this category:`, filtered_items.map(p => ({ id: p.id, title: p.title, featured: p.featured })));
-    console.debug(`[${categoryTitle}] Filtered items (${filter}):`, filtered.map(p => ({ id: p.id, title: p.title })));
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`[${categoryTitle}] Rendered: Total=${filtered_items.length}, Filtered=${filtered.length}`);
+      console.debug(`[${categoryTitle}] All items in this category:`, filtered_items.map(p => ({ id: p.id, title: p.title, featured: p.featured })));
+      console.debug(`[${categoryTitle}] Filtered items (${filter}):`, filtered.map(p => ({ id: p.id, title: p.title })));
+    }
   }, [filtered, filtered_items, categoryTitle, filter]);
 
   // Track distances and find closest item
@@ -50,8 +52,10 @@ export default function CategoryPortfolio({ categoryName, categoryTitle }: Categ
     });
     
     const closestItem = filtered.find(item => item.id === closest);
-    const trackedIds = Array.from(distancesRef.current.keys()).join(', ');
-    console.debug(`[${categoryTitle}] Closest: ${closestItem?.title || 'None'} (ID: ${closest}), Distance: ${closestDistance.toFixed(0)}px, Tracked: ${distancesRef.current.size} items [${trackedIds}]`);
+    if (process.env.NODE_ENV === 'development') {
+      const trackedIds = Array.from(distancesRef.current.keys()).join(', ');
+      console.debug(`[${categoryTitle}] Closest: ${closestItem?.title || 'None'} (ID: ${closest}), Distance: ${closestDistance.toFixed(0)}px, Tracked: ${distancesRef.current.size} items [${trackedIds}]`);
+    }
     
     setClosestItemId(closest);
   };
@@ -133,9 +137,13 @@ function PortfolioCardWrapper({
 
   // Debug: log when wrapper mounts
   useEffect(() => {
-    console.debug(`[CategoryPortfolio] Wrapper mounted for: ${item.title} (ID: ${item.id})`);
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`[CategoryPortfolio] Wrapper mounted for: ${item.title} (ID: ${item.id})`);
+    }
     return () => {
-      console.debug(`[CategoryPortfolio] Wrapper unmounted for: ${item.title} (ID: ${item.id})`);
+      if (process.env.NODE_ENV === 'development') {
+        console.debug(`[CategoryPortfolio] Wrapper unmounted for: ${item.title} (ID: ${item.id})`);
+      }
     };
   }, [item.id, item.title]);
 

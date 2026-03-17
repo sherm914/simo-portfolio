@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { useContactPageContent } from '@/hooks/useContactPageContent';
 
@@ -22,17 +23,19 @@ export default function About() {
       <div className="max-w-full mx-auto">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
-          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg flex items-center justify-center overflow-hidden max-w-md mx-auto md:mx-0 w-full md:w-auto">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg flex items-center justify-center overflow-hidden max-w-md mx-auto md:mx-0 w-full md:w-auto relative h-96">
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-zinc-800 animate-pulse rounded-lg" />
+              <div className="absolute inset-0 bg-zinc-800 animate-pulse rounded-lg z-0" />
             )}
             {content?.profile_image_url ? (
-              <img
+              <Image
                 src={content.profile_image_url}
                 alt="Profile"
-                loading="lazy"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority={false}
                 onLoad={() => setImageLoaded(true)}
-                className={`w-full h-auto object-contain transition-opacity duration-300 ${
+                className={`object-contain transition-opacity duration-300 z-10 ${
                   imageLoaded ? 'opacity-100' : 'opacity-0'
                 }`}
               />

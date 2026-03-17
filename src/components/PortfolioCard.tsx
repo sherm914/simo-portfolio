@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { useIsMobile } from '../hooks/useIsMobile';
 import styles from './PortfolioCard.module.css';
@@ -86,7 +87,7 @@ export default function PortfolioCard({
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
-          if (err.name !== 'AbortError') {
+          if (err.name !== 'AbortError' && process.env.NODE_ENV === 'development') {
             console.debug('Video play on hover failed:', err);
           }
         });
@@ -109,7 +110,7 @@ export default function PortfolioCard({
         if (playPromise !== undefined) {
           playPromise.catch((err) => {
             // Autoplay prevented or cancelled - just continue silently
-            if (err.name !== 'AbortError') {
+            if (err.name !== 'AbortError' && process.env.NODE_ENV === 'development') {
               console.debug('Video play failed:', err);
             }
           });
@@ -138,7 +139,7 @@ export default function PortfolioCard({
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
           // Silently catch autoplay errors
-          if (err.name !== 'AbortError') {
+          if (err.name !== 'AbortError' && process.env.NODE_ENV === 'development') {
             console.debug('Prefetch failed:', err);
           }
         });
@@ -192,13 +193,15 @@ export default function PortfolioCard({
             {!imageLoaded && !imageError && (
               <div className="absolute inset-0 bg-zinc-800 animate-pulse z-0" />
             )}
-            <img
+            <Image
               src={imageUrl}
               alt={title}
-              loading="lazy"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              priority={false}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
-              className={`w-full h-full object-cover transition-opacity duration-300 absolute inset-0 z-5 ${
+              className={`object-cover transition-opacity duration-300 absolute inset-0 z-5 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               } ${
                 (isMobile && isMobileCentered) ? 'opacity-0' : videoUrl ? 'group-hover:opacity-0' : ''

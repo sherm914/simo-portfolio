@@ -24,8 +24,10 @@ export default function SelectedWork() {
 
   // Debug: log when rendered items change
   useEffect(() => {
-    console.debug(`[SelectedWork] Rendered: ${filtered.length} featured items`);
-    console.debug(`[SelectedWork] All featured items from DB:`, filtered.map(p => ({ id: p.id, title: p.title, featured: p.featured })));
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`[SelectedWork] Rendered: ${filtered.length} featured items`);
+      console.debug(`[SelectedWork] All featured items from DB:`, filtered.map(p => ({ id: p.id, title: p.title, featured: p.featured })));
+    }
   }, [filtered]);
 
   // Track distances and find closest item
@@ -43,8 +45,10 @@ export default function SelectedWork() {
     });
     
     const closestItem = filtered.find(item => item.id === closest);
-    const trackedIds = Array.from(distancesRef.current.keys()).join(', ');
-    console.debug(`[SelectedWork] Closest: ${closestItem?.title || 'None'} (ID: ${closest}), Distance: ${closestDistance.toFixed(0)}px, Tracked: ${distancesRef.current.size} items [${trackedIds}]`);
+    if (process.env.NODE_ENV === 'development') {
+      const trackedIds = Array.from(distancesRef.current.keys()).join(', ');
+      console.debug(`[SelectedWork] Closest: ${closestItem?.title || 'None'} (ID: ${closest}), Distance: ${closestDistance.toFixed(0)}px, Tracked: ${distancesRef.current.size} items [${trackedIds}]`);
+    }
     
     setClosestItemId(closest);
   };
@@ -60,7 +64,9 @@ export default function SelectedWork() {
           onMouseLeave={() => setHoveredId(null)}
         >
           {filtered.map((item, index) => {
-            console.debug(`[SelectedWork] Mapping item ${index + 1}/${filtered.length}: ${item.title} (ID: ${item.id})`);
+            if (process.env.NODE_ENV === 'development') {
+              console.debug(`[SelectedWork] Mapping item ${index + 1}/${filtered.length}: ${item.title} (ID: ${item.id})`);
+            }
             return (
               <PortfolioCardWrapperSelectedWork
                 key={item.id}
@@ -106,13 +112,19 @@ function PortfolioCardWrapperSelectedWork({
 }: PortfolioCardWrapperSelectedWorkProps) {
   const { ref, distance } = useScrollCenter<HTMLDivElement>();
   
-  console.debug(`[SelectedWork] Wrapper render: ${item.title} (ID: ${item.id}), distance: ${distance.toFixed(0)}px`);
+  if (process.env.NODE_ENV === 'development') {
+    console.debug(`[SelectedWork] Wrapper render: ${item.title} (ID: ${item.id}), distance: ${distance.toFixed(0)}px`);
+  }
 
   // Debug: log when wrapper mounts
   useEffect(() => {
-    console.debug(`[SelectedWork] Wrapper mounted for: ${item.title} (ID: ${item.id})`);
+    if (process.env.NODE_ENV === 'development') {
+      console.debug(`[SelectedWork] Wrapper mounted for: ${item.title} (ID: ${item.id})`);
+    }
     return () => {
-      console.debug(`[SelectedWork] Wrapper unmounted for: ${item.title} (ID: ${item.id})`);
+      if (process.env.NODE_ENV === 'development') {
+        console.debug(`[SelectedWork] Wrapper unmounted for: ${item.title} (ID: ${item.id})`);
+      }
     };
   }, [item.id, item.title]);
 
