@@ -16,7 +16,11 @@ export const metadata: Metadata = {
   title: "Simo Motsa",
   description: "Showcase of video editing, VFX, motion graphics, and production work",
   icons: {
-    icon: "/favicon.png",
+    icon: [
+      { url: "/favicon.png?v=1", type: "image/png" },
+      { url: "/favicon.ico?v=1" },
+    ],
+    apple: "/favicon.png?v=1",
   },
 };
 
