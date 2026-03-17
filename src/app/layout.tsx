@@ -17,10 +17,10 @@ export const metadata: Metadata = {
   description: "Showcase of video editing, VFX, motion graphics, and production work",
   icons: {
     icon: [
-      { url: "/favicon.png?v=1", type: "image/png" },
-      { url: "/favicon.ico?v=1" },
+      { url: "/favicon.png?v=2", type: "image/png" },
+      { url: "/favicon.ico?v=2" },
     ],
-    apple: "/favicon.png?v=1",
+    apple: "/favicon.png?v=2",
   },
 };
 
