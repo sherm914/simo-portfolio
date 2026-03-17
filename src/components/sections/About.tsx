@@ -40,6 +40,55 @@ export default function About() {
               </p>
             )}
             
+            {/* Let's Work Together Section */}
+            <div className="mb-8 pt-8 border-t border-zinc-700">
+              <h3 className="text-white font-semibold text-lg mb-4">Let&apos;s Work Together</h3>
+              <p className="text-zinc-300 text-sm mb-6">
+                Have a project in mind? I&apos;d love to hear about it. Get in touch and let&apos;s create something amazing together.
+              </p>
+              
+              {content?.contact_email && (
+                <div className="mb-6">
+                  <p className="text-zinc-400 text-sm font-medium mb-2">Email</p>
+                  <a href={`mailto:${content.contact_email}`} className="text-white hover:text-zinc-300 transition">
+                    {content.contact_email}
+                  </a>
+                </div>
+              )}
+              
+              {content?.social_links && Object.keys(content.social_links).length > 0 && (
+                <div>
+                  <p className="text-zinc-400 text-sm font-medium mb-3">Follow</p>
+                  <div className="flex flex-wrap gap-4">
+                    {content.social_links.instagram && (
+                      <a href={content.social_links.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white hover:text-zinc-300 transition">
+                        <span>📷</span>
+                        <span>Instagram</span>
+                      </a>
+                    )}
+                    {content.social_links.linkedin && (
+                      <a href={content.social_links.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white hover:text-zinc-300 transition">
+                        <span>💼</span>
+                        <span>LinkedIn</span>
+                      </a>
+                    )}
+                    {content.social_links.twitter && (
+                      <a href={content.social_links.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white hover:text-zinc-300 transition">
+                        <span>𝕏</span>
+                        <span>Twitter</span>
+                      </a>
+                    )}
+                    {content.social_links.youtube && (
+                      <a href={content.social_links.youtube} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white hover:text-zinc-300 transition">
+                        <span>▶️</span>
+                        <span>YouTube</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            
             {content?.skills && content.skills.length > 0 && (
               <div className="space-y-4">
                 <h3 className="text-white font-semibold text-lg">Key Skills</h3>
