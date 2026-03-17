@@ -18,7 +18,6 @@ export default function About() {
   return (
     <section className="pt-24 pb-8 px-6 bg-zinc-900">
       <div className="max-w-full mx-auto">
-        <h2 className="text-5xl font-bold text-white mb-8 px-6">About Me</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
           <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg flex items-center justify-center overflow-hidden max-w-md mx-auto md:mx-0 w-full md:w-auto">
@@ -34,6 +33,12 @@ export default function About() {
           </div>
           
           <div>
+            {content?.about_text && (
+              <p className="text-lg text-zinc-300 mb-8 leading-relaxed">
+                {content.about_text}
+              </p>
+            )}
+            
             {/* Let's Work Together Section */}
             <div className="mb-8 pt-8 border-t border-zinc-700">
               <h3 className="text-white font-semibold text-lg mb-4">Let&apos;s Work Together</h3>
