@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useContactPageContent } from '@/hooks/useContactPageContent';
 
 export default function About() {
   const { content, loading } = useContactPageContent();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   if (loading) {
     return (
@@ -21,11 +23,18 @@ export default function About() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
           <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg flex items-center justify-center overflow-hidden max-w-md mx-auto md:mx-0 w-full md:w-auto">
+            {!imageLoaded && (
+              <div className="absolute inset-0 bg-zinc-800 animate-pulse rounded-lg" />
+            )}
             {content?.profile_image_url ? (
               <img
                 src={content.profile_image_url}
                 alt="Profile"
-                className="w-full h-auto object-contain"
+                loading="lazy"
+                onLoad={() => setImageLoaded(true)}
+                className={`w-full h-auto object-contain transition-opacity duration-300 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
               />
             ) : (
               <p className="text-zinc-400 text-center">[Profile Image]</p>

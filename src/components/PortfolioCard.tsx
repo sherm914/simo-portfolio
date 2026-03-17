@@ -31,6 +31,8 @@ export default function PortfolioCard({
   distance = Infinity,
 }: PortfolioCardProps) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
@@ -186,13 +188,23 @@ export default function PortfolioCard({
         ) : null}
 
         {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={title}
-            className={`w-full h-full object-cover transition-opacity duration-300 absolute inset-0 ${
-              (isMobile && isMobileCentered) ? 'opacity-0' : videoUrl ? 'group-hover:opacity-0' : ''
-            }`}
-          />
+          <>
+            {!imageLoaded && !imageError && (
+              <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
+            )}
+            <img
+              src={imageUrl}
+              alt={title}
+              loading="lazy"
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+              className={`w-full h-full object-cover transition-opacity duration-300 absolute inset-0 ${
+                imageLoaded ? 'opacity-100' : 'opacity-0'
+              } ${
+                (isMobile && isMobileCentered) ? 'opacity-0' : videoUrl ? 'group-hover:opacity-0' : ''
+              }`}
+            />
+          </>
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center opacity-50">
             <div className="text-center text-white">

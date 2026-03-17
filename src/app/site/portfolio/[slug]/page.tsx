@@ -13,6 +13,7 @@ export default function PortfolioDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showPlayButton, setShowPlayButton] = useState(false);
+  const [btsImageLoaded, setBtsImageLoaded] = useState<Record<number, boolean>>({});
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -168,8 +169,19 @@ export default function PortfolioDetail() {
               <div className="mb-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {project.bts_images.map((imageUrl, index) => (
-                    <div key={index} className="aspect-video bg-zinc-900 rounded-lg overflow-hidden">
-                      <img src={imageUrl} alt={`BTS Image ${index + 1}`} className="w-full h-full object-cover" />
+                    <div key={index} className="aspect-video bg-zinc-900 rounded-lg overflow-hidden relative">
+                      {!btsImageLoaded[index] && (
+                        <div className="absolute inset-0 bg-zinc-800 animate-pulse rounded-lg" />
+                      )}
+                      <img 
+                        src={imageUrl} 
+                        alt={`BTS Image ${index + 1}`} 
+                        loading="lazy"
+                        onLoad={() => setBtsImageLoaded(prev => ({ ...prev, [index]: true }))}
+                        className={`w-full h-full object-cover transition-opacity duration-300 ${
+                          btsImageLoaded[index] ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
                     </div>
                   ))}
                 </div>
