@@ -21,12 +21,12 @@ export default function About() {
         <h2 className="text-5xl font-bold text-white mb-8 px-6">About Me</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
-          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg flex items-center justify-center overflow-hidden max-w-md">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg flex items-center justify-center overflow-hidden max-w-md mx-auto md:mx-0 w-full md:w-auto">
             {content?.profile_image_url ? (
               <img
                 src={content.profile_image_url}
                 alt="Profile"
-                className="w-full object-contain"
+                className="w-full h-auto object-contain"
               />
             ) : (
               <p className="text-zinc-400 text-center">[Profile Image]</p>
@@ -34,12 +34,6 @@ export default function About() {
           </div>
           
           <div>
-            {content?.about_text && (
-              <p className="text-lg text-zinc-300 mb-8 leading-relaxed">
-                {content.about_text}
-              </p>
-            )}
-            
             {/* Let's Work Together Section */}
             <div className="mb-8 pt-8 border-t border-zinc-700">
               <h3 className="text-white font-semibold text-lg mb-4">Let&apos;s Work Together</h3>
