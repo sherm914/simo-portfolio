@@ -177,7 +177,7 @@ export default function PortfolioCard({
           <video
             ref={videoRef}
             src={videoUrl}
-            className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 ${
+            className={`w-full h-full object-cover absolute inset-0 transition-opacity duration-300 z-10 ${
               (isMobile && isMobileCentered) || isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
             }`}
             muted
@@ -190,7 +190,7 @@ export default function PortfolioCard({
         {imageUrl ? (
           <>
             {!imageLoaded && !imageError && (
-              <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
+              <div className="absolute inset-0 bg-zinc-800 animate-pulse z-0" />
             )}
             <img
               src={imageUrl}
@@ -198,7 +198,7 @@ export default function PortfolioCard({
               loading="lazy"
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
-              className={`w-full h-full object-cover transition-opacity duration-300 absolute inset-0 ${
+              className={`w-full h-full object-cover transition-opacity duration-300 absolute inset-0 z-5 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               } ${
                 (isMobile && isMobileCentered) ? 'opacity-0' : videoUrl ? 'group-hover:opacity-0' : ''
