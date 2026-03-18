@@ -85,7 +85,7 @@ export default function SelectedWork() {
             href="/site/contact"
             className="sm:hidden h-40 w-full border border-white/20 rounded-lg flex items-center justify-center transition-all duration-300 hover:border-white/40 hover:bg-white/5"
           >
-            <div className="text-white text-sm font-medium">Let's Work</div>
+            <div className="text-white text-4xl font-medium">LET'S WORK</div>
           </a>
         </div>
       </div>
