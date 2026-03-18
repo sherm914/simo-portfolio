@@ -16,16 +16,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   try {
     // Fetch project data for metadata
-    const { data: project } = await supabase
+    const { data: project, error } = await supabase
       .from('portfolio_items')
       .select('*')
       .eq('slug', params.slug)
       .single();
 
-    if (!project) {
+    if (error || !project) {
       return {
-        title: 'Project Not Found',
-        description: 'This project could not be found.',
+        title: 'Portfolio Project',
+        description: 'View the latest project from Simo Motsa portfolio',
       };
     }
 
@@ -33,7 +33,7 @@ export async function generateMetadata({
     const projectUrl = `${baseUrl}/site/portfolio/${project.slug}`;
     
     return {
-      title: `${project.title} | Simo Motsa`,
+      title: project.title,
       description: project.description || `${project.title} - A ${project.type} by Simo Motsa`,
       alternates: {
         canonical: projectUrl,
@@ -64,7 +64,7 @@ export async function generateMetadata({
     console.error('Error generating metadata:', error);
     return {
       title: 'Portfolio Project',
-      description: 'View Simo Motsa portfolio project',
+      description: 'View the latest project from Simo Motsa portfolio',
     };
   }
 }

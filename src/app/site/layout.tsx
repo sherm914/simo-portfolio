@@ -1,7 +1,11 @@
 import Header from '@/components/common/Header';
+import { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Simo Motsa - Portfolio',
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Simo Motsa',
+    default: 'Simo Motsa - Portfolio',
+  },
 };
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {

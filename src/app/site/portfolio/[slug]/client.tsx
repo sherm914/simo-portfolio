@@ -98,16 +98,6 @@ export function PortfolioDetailClient() {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold mb-6">{project.title}</h1>
         <p className="text-zinc-300 mb-6">{project.description}</p>
-        <div className="mb-12">
-          <p className="text-sm text-zinc-500 mb-2">{project.type}</p>
-          <div className="flex gap-4 flex-wrap">
-            {Array.isArray(project.categories) && project.categories.map((cat) => (
-              <span key={cat} className="px-3 py-1 bg-zinc-800 rounded-full text-sm">
-                {cat}
-              </span>
-            ))}
-          </div>
-        </div>
 
         {project.video_url && (
           <div className="relative mb-16 rounded-lg overflow-hidden bg-black aspect-video">
@@ -166,6 +156,24 @@ export function PortfolioDetailClient() {
                     className={`object-cover transition-opacity duration-300 z-10 ${
                       btsImageLoaded[index] ? 'opacity-100' : 'opacity-0'
                     }`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {Array.isArray(project.bts_videos) && project.bts_videos.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold mb-6">Behind the Scenes Videos</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {project.bts_videos.map((videoUrl, index) => (
+                <div key={index} className="relative w-full aspect-video rounded-lg overflow-hidden bg-zinc-900">
+                  <video
+                    src={videoUrl}
+                    className="w-full h-full object-cover"
+                    controls
+                    playsInline
                   />
                 </div>
               ))}
