@@ -21,9 +21,9 @@ export default function About() {
 
   return (
     <section className="pt-24 pb-8 px-6 bg-zinc-900">
-      <div className="max-w-full mx-auto">
+      <div className="max-w-6xl mx-auto">
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
           <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg flex items-center justify-center overflow-hidden max-w-md mx-auto md:mx-0 w-full md:w-auto">
             {!imageLoaded && (
               <div className="absolute inset-0 bg-zinc-800 animate-pulse rounded-lg" />
