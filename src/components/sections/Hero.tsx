@@ -127,8 +127,11 @@ export default function Hero() {
       prevPosRef.current = { x: e.clientX, y: e.clientY };
       setMousePos({ x: e.clientX, y: e.clientY });
 
-      // 3D tilt on title (desktop)
-      if (titleRef.current && !isMobile) {
+      // 3D tilt on title (desktop only)
+      const userAgent = navigator.userAgent;
+      const isMobileDevice = /iPhone|iPad|Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+      
+      if (titleRef.current && !isMobileDevice) {
         const rect = titleRef.current.getBoundingClientRect();
         const relX = e.clientX - (rect.left + rect.width / 2);
         const relY = e.clientY - (rect.top + rect.height / 2);
@@ -140,16 +143,15 @@ export default function Hero() {
 
     const handleScroll = () => setScrollY(window.scrollY);
     
-    if (!isMobile) {
-      window.addEventListener('mousemove', handleMouse);
-    }
+    // Always attach listeners, don't depend on isMobile state
+    window.addEventListener('mousemove', handleMouse);
     window.addEventListener('scroll', handleScroll);
     
     return () => {
       window.removeEventListener('mousemove', handleMouse);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [isMobile]);
+  }, []);
 
   // decay velocity when cursor stops
   useEffect(() => {
