@@ -123,17 +123,21 @@ export function PortfolioDetailClient() {
           </div>
         )}
 
-        {project.about && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">About</h2>
-            <p className="text-zinc-300 leading-relaxed">{project.about}</p>
-          </div>
-        )}
+        {(project.about || project.roles) && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+            {project.roles && (
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">Roles</h2>
+                <p className="text-zinc-300">{project.roles}</p>
+              </div>
+            )}
 
-        {project.roles && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">Roles</h2>
-            <p className="text-zinc-300">{project.roles}</p>
+            {project.about && (
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">About</h2>
+                <p className="text-zinc-300 leading-relaxed">{project.about}</p>
+              </div>
+            )}
           </div>
         )}
 
