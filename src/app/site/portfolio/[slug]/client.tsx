@@ -165,14 +165,15 @@ export function PortfolioDetailClient() {
 
         {Array.isArray(project.bts_videos) && project.bts_videos.length > 0 && (
           <div className="mb-12">
-            <h2 className="text-2xl font-semibold mb-6">Behind the Scenes Videos</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-6">
               {project.bts_videos.map((videoUrl, index) => (
                 <div key={index} className="relative w-full aspect-video rounded-lg overflow-hidden bg-zinc-900">
                   <video
                     src={videoUrl}
                     className="w-full h-full object-cover"
                     controls
+                    autoPlay
+                    muted
                     playsInline
                   />
                 </div>
