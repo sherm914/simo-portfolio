@@ -7,6 +7,7 @@ import { useContactPageContent } from '@/hooks/useContactPageContent';
 export default function About() {
   const { content, loading } = useContactPageContent();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
 
   if (loading) {
     return (
@@ -23,22 +24,28 @@ export default function About() {
       <div className="max-w-full mx-auto">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
-          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg flex items-center justify-center overflow-hidden max-w-md mx-auto md:mx-0 w-full md:w-auto relative h-96">
+          <div className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-lg flex items-center justify-center overflow-hidden max-w-md mx-auto md:mx-0 w-full md:w-auto">
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-zinc-800 animate-pulse rounded-lg z-0" />
+              <div className="absolute inset-0 bg-zinc-800 animate-pulse rounded-lg" />
             )}
             {content?.profile_image_url ? (
-              <Image
-                src={content.profile_image_url}
-                alt="Profile"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority={false}
-                onLoad={() => setImageLoaded(true)}
-                className={`object-contain transition-opacity duration-300 z-10 ${
-                  imageLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-              />
+              <div className="relative w-full" style={imageDimensions ? { aspectRatio: `${imageDimensions.width} / ${imageDimensions.height}` } : {}}>
+                <Image
+                  src={content.profile_image_url}
+                  alt="Profile"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={false}
+                  onLoad={(result) => {
+                    const img = result.currentTarget as HTMLImageElement;
+                    setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+                    setImageLoaded(true);
+                  }}
+                  className={`object-contain transition-opacity duration-300 ${
+                    imageLoaded ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+              </div>
             ) : (
               <p className="text-zinc-400 text-center">[Profile Image]</p>
             )}
