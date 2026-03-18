@@ -85,7 +85,7 @@ export function PortfolioDetailClient() {
         <div className="text-center">
           <p className="text-xl mb-2">Sorry, project not found.</p>
           {error && <p className="text-zinc-400 text-sm mb-4">{error}</p>}
-          <Link href="/site/selected-work" className="text-blue-400 underline">
+          <Link href="/site/selected-work" className="text-white/60 hover:text-white transition-colors">
             ← Back to projects
           </Link>
         </div>
@@ -173,7 +173,7 @@ export function PortfolioDetailClient() {
           </div>
         )}
 
-        <Link href="/site/selected-work" className="text-blue-400 underline hover:text-blue-300">
+        <Link href="/site/selected-work" className="text-white/60 hover:text-white transition-colors">
           ← Back to projects
         </Link>
       </div>
