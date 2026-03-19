@@ -12,14 +12,17 @@ const supabase = createClient(
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   try {
+    // Await params since it's now a Promise in Next.js 15+
+    const { slug } = await params;
+    
     // Fetch project data for metadata
     const { data: project, error } = await supabase
       .from('portfolio_items')
       .select('*')
-      .eq('slug', params.slug)
+      .eq('slug', slug)
       .single();
 
     if (error || !project) {
