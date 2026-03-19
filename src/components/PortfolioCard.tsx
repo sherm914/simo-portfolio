@@ -129,12 +129,12 @@ export default function PortfolioCard({
     if (!videoRef.current || !videoUrl || isMobileCentered || distance === Infinity) return;
 
     const video = videoRef.current;
-    // Moderate prefetch threshold for good balance
-    const PREFETCH_THRESHOLD = 1200; // moderate prefetch for smooth scrolling
+    // More aggressive prefetch for faster loading
+    const PREFETCH_THRESHOLD = 1600; // Larger prefetch window
 
     if (distance < PREFETCH_THRESHOLD && video.paused) {
-      // Start playing quietly to buffer, without seeking
-      // Keep it at beginning for smooth first playback
+      // Start buffering video by setting preload and playing muted
+      video.preload = 'auto';
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
@@ -161,7 +161,7 @@ export default function PortfolioCard({
       <Link
         href={href}
         className={`
-          group relative bg-zinc-900 rounded-lg overflow-hidden transition-all duration-300
+          group relative bg-gradient-to-br from-zinc-800 via-zinc-900 to-black rounded-lg overflow-hidden transition-all duration-300
           ${isSmall ? 'aspect-video' : 'aspect-video'}
           hover:shadow-2xl
           block w-full h-full
@@ -184,14 +184,14 @@ export default function PortfolioCard({
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
           />
         ) : null}
 
         {imageUrl ? (
           <>
             {!imageLoaded && !imageError && (
-              <div className="absolute inset-0 bg-zinc-800 animate-pulse z-0" />
+              <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 via-zinc-800 to-zinc-900 animate-pulse z-0" />
             )}
             <Image
               src={imageUrl}
