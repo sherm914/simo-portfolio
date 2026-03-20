@@ -247,7 +247,7 @@ export default function Hero() {
           SIMO MOTSA
         </h1>
 
-        <p className={`text-lg sm:text-xl md:text-2xl text-zinc-300 mb-12 max-w-3xl mx-auto leading-relaxed min-h-12 transition-opacity duration-500 ${
+        <p className={`text-lg sm:text-xl md:text-2xl text-zinc-300 mb-12 max-w-3xl mx-auto leading-relaxed min-h-16 sm:min-h-14 md:min-h-12 px-4 transition-opacity duration-500 ${
             fade ? 'opacity-0' : 'opacity-100'
           }`}>
           {typed}
