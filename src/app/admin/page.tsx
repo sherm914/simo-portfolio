@@ -58,17 +58,6 @@ export default function AdminDashboard() {
     fetchItems();
   }, []);
 
-  // Ensure body can always scroll (fix for Cloudinary modal locking scroll)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (document.body.style.overflow === 'hidden') {
-        document.body.style.overflow = 'auto';
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
   // Update grid items when category filter changes
   useEffect(() => {
     if (viewMode === 'grid') {

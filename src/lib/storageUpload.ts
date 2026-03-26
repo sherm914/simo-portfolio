@@ -49,33 +49,6 @@ export async function uploadToSupabase(
 }
 
 /**
- * Convert Cloudinary URL to File and upload to Supabase
- * (Fallback option if you need to migrate from Cloudinary)
- */
-export async function migrateCloudinaryToSupabase(
-  cloudinaryUrl: string,
-  folder: string
-): Promise<string> {
-  try {
-    // Fetch file from Cloudinary
-    const response = await fetch(cloudinaryUrl);
-    if (!response.ok) {
-      throw new Error('Failed to fetch file from Cloudinary');
-    }
-
-    const blob = await response.blob();
-    const filename = cloudinaryUrl.split('/').pop() || `image-${Date.now()}`;
-    const file = new File([blob], filename, { type: blob.type });
-
-    // Upload to Supabase
-    return uploadToSupabase(file, folder);
-  } catch (error) {
-    console.error('Failed to migrate from Cloudinary:', error);
-    throw error;
-  }
-}
-
-/**
  * Delete a file from Supabase Storage
  */
 export async function deleteFromSupabase(filePath: string): Promise<void> {
