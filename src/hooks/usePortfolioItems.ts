@@ -15,7 +15,7 @@ export function usePortfolioItems() {
         setLoading(true);
         const { data, error } = await supabase
           .from('portfolio_items')
-          .select('*');
+          .select('id,title,slug,category,type,featured,image,videoUrl');
 
         if (error) throw error;
         setItems(data || []);

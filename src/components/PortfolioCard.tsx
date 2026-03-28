@@ -129,12 +129,12 @@ export default function PortfolioCard({
     if (!videoRef.current || !videoUrl || isMobileCentered || distance === Infinity) return;
 
     const video = videoRef.current;
-    // More aggressive prefetch for faster loading
-    const PREFETCH_THRESHOLD = 1600; // Larger prefetch window
+    // Reduced prefetch threshold - 800px instead of 1600px to save bandwidth
+    const PREFETCH_THRESHOLD = 800;
 
     if (distance < PREFETCH_THRESHOLD && video.paused) {
       // Start buffering video by setting preload and playing muted
-      video.preload = 'auto';
+      video.preload = 'metadata'; // Only preload metadata, not full video
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
@@ -184,7 +184,7 @@ export default function PortfolioCard({
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
           />
         ) : null}
 
@@ -198,6 +198,7 @@ export default function PortfolioCard({
               alt={title}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              quality={75}
               priority={false}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}

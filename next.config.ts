@@ -13,7 +13,10 @@ const nextConfig: NextConfig = {
         hostname: 'supabase.co',
       },
     ],
+    formats: ['image/avif', 'image/webp'], // Modern formats first, PNG fallback
   },
+  // Enable compression for all responses
+  compress: true,
 };
 
 export default nextConfig;
