@@ -28,14 +28,14 @@ function useTypewriter(words: string[], speed = 120, pauseAfter = 1200) {
   useEffect(() => {
     if (!fade) return;
     const f = setTimeout(() => {
-      setFade(false);
       setSubIndex(0);
       setWordIndex((w) => (w + 1) % words.length);
-    }, 500); // fade duration matches tailwind transition
+      setFade(false);
+    }, 600); // increased fade duration to ensure complete transition on Safari
     return () => clearTimeout(f);
   }, [fade, words.length]);
 
-  const text = words[wordIndex].substring(0, subIndex);
+  const text = fade ? '' : words[wordIndex].substring(0, subIndex);
   return { text, fade };
 }
 
@@ -247,7 +247,7 @@ export default function Hero() {
           SIMO MOTSA
         </h1>
 
-        <p className={`text-lg sm:text-xl md:text-2xl text-zinc-300 mb-12 max-w-3xl mx-auto leading-relaxed min-h-16 sm:min-h-14 md:min-h-12 px-4 transition-opacity duration-500 ${
+        <p className={`text-lg sm:text-xl md:text-2xl text-zinc-300 mb-12 max-w-3xl mx-auto leading-relaxed min-h-16 sm:min-h-14 md:min-h-12 px-4 transition-opacity duration-600 overflow-hidden ${
             fade ? 'opacity-0' : 'opacity-100'
           }`}>
           {typed}
