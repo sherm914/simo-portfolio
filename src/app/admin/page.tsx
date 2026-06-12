@@ -389,11 +389,11 @@ export default function AdminDashboard() {
     [newOrder[currentIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[currentIndex]];
 
     // Determine which category key to use for ordering
-    let categoryKey: keyof typeof items[0].category_orders;
+    let categoryKey: keyof PortfolioItem['category_orders'];
     if (selectedCategory === 'Featured') {
-      categoryKey = (newOrder[currentIndex].categories[0] || 'Directing') as keyof typeof items[0].category_orders;
+      categoryKey = (newOrder[currentIndex].categories[0] || 'Directing') as keyof PortfolioItem['category_orders'];
     } else {
-      categoryKey = selectedCategory as keyof typeof items[0].category_orders;
+      categoryKey = selectedCategory as keyof PortfolioItem['category_orders'];
     }
 
     try {
