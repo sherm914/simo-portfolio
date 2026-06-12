@@ -429,15 +429,18 @@ export default function AdminDashboard() {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, itemId: number) => {
     setDraggedItemId(itemId);
     e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', itemId.toString());
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     e.preventDefault();
+    e.stopPropagation();
     e.dataTransfer.dropEffect = 'move';
     setHoveredIndex(index);
   };
 
-  const handleDragLeave = () => {
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
     setHoveredIndex(null);
   };
 
@@ -1420,7 +1423,7 @@ export default function AdminDashboard() {
                     draggable
                     onDragStart={(e) => handleDragStart(e, item.id)}
                     onDragOver={(e) => handleDragOver(e, index)}
-                    onDragLeave={handleDragLeave}
+                    onDragLeave={(e) => handleDragLeave(e)}
                     onDrop={(e) => handleDrop(e, index)}
                     className={`rounded overflow-hidden border-2 transition-all duration-200 cursor-move ${
                       draggedItemId === item.id
