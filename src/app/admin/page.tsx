@@ -375,33 +375,51 @@ export default function AdminDashboard() {
   };
 
   const reorderItems = async (itemId: number, direction: 'up' | 'down') => {
-    const categoryItems = getItemsByCategory();
-    const currentIndex = categoryItems.findIndex(i => i.id === itemId);
-    if (currentIndex === -1) return;
-
-    if (direction === 'up' && currentIndex === 0) return;
-    if (direction === 'down' && currentIndex === categoryItems.length - 1) return;
-
-    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-
-    // Swap items in the array
-    const newOrder = [...categoryItems];
-    [newOrder[currentIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[currentIndex]];
-
-    // Determine which category key to use for ordering
-    let categoryKey: keyof PortfolioItem['category_orders'];
-    if (selectedCategory === 'Featured') {
-      categoryKey = (newOrder[currentIndex].categories[0] || 'Directing') as keyof PortfolioItem['category_orders'];
-    } else {
-      categoryKey = selectedCategory as keyof PortfolioItem['category_orders'];
-    }
-
     try {
+      const categoryItems = getItemsByCategory();
+      const currentIndex = categoryItems.findIndex(i => i.id === itemId);
+      
+      console.log(`[Reorder] Item ID: ${itemId}, Index: ${currentIndex}, Direction: ${direction}`);
+      console.log(`[Reorder] Items in category: ${categoryItems.length}`, categoryItems);
+      
+      if (currentIndex === -1) {
+        console.error('[Reorder] Item not found in category');
+        alert('Item not found in this category');
+        return;
+      }
+
+      if (direction === 'up' && currentIndex === 0) {
+        console.log('[Reorder] Already at top');
+        return;
+      }
+      if (direction === 'down' && currentIndex === categoryItems.length - 1) {
+        console.log('[Reorder] Already at bottom');
+        return;
+      }
+
+      const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+
+      // Swap items in the array
+      const newOrder = [...categoryItems];
+      [newOrder[currentIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[currentIndex]];
+
+      // Determine which category key to use for ordering
+      let categoryKey: keyof PortfolioItem['category_orders'];
+      if (selectedCategory === 'Featured') {
+        categoryKey = (newOrder[currentIndex].categories[0] || 'Directing') as keyof PortfolioItem['category_orders'];
+      } else {
+        categoryKey = selectedCategory as keyof PortfolioItem['category_orders'];
+      }
+      
+      console.log(`[Reorder] Category key: ${String(categoryKey)}`);
+
       // Update order values for all items in the reordered sequence
       for (let i = 0; i < newOrder.length; i++) {
         const item = newOrder[i];
         const updatedOrders = { ...(item.category_orders || {}) };
         updatedOrders[categoryKey] = i;
+
+        console.log(`[Reorder] Updating item ${item.id} (${item.title}) with order ${i}`);
 
         await supabase
           .from('portfolio_items')
@@ -409,11 +427,12 @@ export default function AdminDashboard() {
           .eq('id', item.id);
       }
 
+      console.log('[Reorder] Success - fetching fresh data');
       // Fetch fresh data from database to ensure consistency
       await fetchItems();
     } catch (error) {
-      console.error('Failed to reorder items:', error);
-      alert('Failed to reorder items');
+      console.error('[Reorder] Fatal error:', error);
+      alert(`Failed to reorder items: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -442,7 +461,11 @@ export default function AdminDashboard() {
     const currentItems = viewMode === 'grid' ? tempOrderedItems : getItemsByCategory();
     const draggedIndex = currentItems.findIndex(i => i.id === draggedItemId);
     
+    console.log(`[DragDrop] Dragged ID: ${draggedItemId}, From: ${draggedIndex}, To: ${dropIndex}`);
+    console.log(`[DragDrop] Current items:`, currentItems);
+    
     if (draggedIndex === -1 || draggedIndex === dropIndex) {
+      console.log('[DragDrop] Invalid drop - same position or item not found');
       setDraggedItemId(null);
       setHoveredIndex(null);
       return;
@@ -456,6 +479,7 @@ export default function AdminDashboard() {
     const insertIndex = draggedIndex < dropIndex ? dropIndex - 1 : dropIndex;
     newItems.splice(insertIndex, 0, draggedItem);
 
+    console.log('[DragDrop] New order:', newItems);
     setTempOrderedItems(newItems);
     setHasUnsavedChanges(true);
     setDraggedItemId(null);
