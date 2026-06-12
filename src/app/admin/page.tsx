@@ -383,40 +383,31 @@ export default function AdminDashboard() {
     if (direction === 'down' && currentIndex === categoryItems.length - 1) return;
 
     const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-    const currentItem = categoryItems[currentIndex];
-    const targetItem = categoryItems[targetIndex];
 
-    if (!currentItem || !targetItem) return;
+    // Swap items in the array
+    const newOrder = [...categoryItems];
+    [newOrder[currentIndex], newOrder[targetIndex]] = [newOrder[targetIndex], newOrder[currentIndex]];
 
     // Determine which category key to use for ordering
-    let categoryKey: keyof typeof currentItem.category_orders;
+    let categoryKey: keyof typeof items[0].category_orders;
     if (selectedCategory === 'Featured') {
-      // For featured items, use the first category for ordering
-      categoryKey = (currentItem.categories[0] || 'Directing') as keyof typeof currentItem.category_orders;
+      categoryKey = (newOrder[currentIndex].categories[0] || 'Directing') as keyof typeof items[0].category_orders;
     } else {
-      categoryKey = selectedCategory as keyof typeof currentItem.category_orders;
+      categoryKey = selectedCategory as keyof typeof items[0].category_orders;
     }
 
-    const tempOrder = currentItem.category_orders?.[categoryKey];
-
     try {
-      // Update current item
-      const updatedCurrentOrders = { ...(currentItem.category_orders || {}) };
-      updatedCurrentOrders[categoryKey] = targetItem.category_orders?.[categoryKey];
-      
-      await supabase
-        .from('portfolio_items')
-        .update({ category_orders: updatedCurrentOrders })
-        .eq('id', currentItem.id);
+      // Update order values for all items in the reordered sequence
+      for (let i = 0; i < newOrder.length; i++) {
+        const item = newOrder[i];
+        const updatedOrders = { ...(item.category_orders || {}) };
+        updatedOrders[categoryKey] = i;
 
-      // Update target item
-      const updatedTargetOrders = { ...(targetItem.category_orders || {}) };
-      updatedTargetOrders[categoryKey] = tempOrder;
-      
-      await supabase
-        .from('portfolio_items')
-        .update({ category_orders: updatedTargetOrders })
-        .eq('id', targetItem.id);
+        await supabase
+          .from('portfolio_items')
+          .update({ category_orders: updatedOrders })
+          .eq('id', item.id);
+      }
 
       // Fetch fresh data from database to ensure consistency
       await fetchItems();
@@ -457,11 +448,13 @@ export default function AdminDashboard() {
       return;
     }
 
-    // Reorder the items
-    const newItems = [...currentItems];
-    const draggedItem = newItems[draggedIndex];
-    newItems.splice(draggedIndex, 1);
-    newItems.splice(dropIndex, 0, draggedItem);
+    // Reorder using array destructuring to avoid index shifting issues
+    const newItems = currentItems.filter((_, i) => i !== draggedIndex);
+    const draggedItem = currentItems[draggedIndex];
+    
+    // Insert at the target position (accounting for the removal)
+    const insertIndex = draggedIndex < dropIndex ? dropIndex - 1 : dropIndex;
+    newItems.splice(insertIndex, 0, draggedItem);
 
     setTempOrderedItems(newItems);
     setHasUnsavedChanges(true);
