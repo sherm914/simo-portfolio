@@ -437,9 +437,15 @@ export default function AdminDashboard() {
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, itemId: number) => {
+    // Prevent drag if it started from a button
+    if ((e.target as HTMLElement).closest('button')) {
+      e.preventDefault();
+      return;
+    }
     setDraggedItemId(itemId);
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', itemId.toString());
+    console.log(`[DragStart] Started dragging item ${itemId}`);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
@@ -1454,20 +1460,20 @@ export default function AdminDashboard() {
                       <img
                         src={item.image_url}
                         alt={item.title}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-48 object-cover pointer-events-none"
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = 'none';
                         }}
                       />
                     ) : (
-                      <div className="w-full h-48 bg-zinc-700 flex items-center justify-center text-zinc-500">
+                      <div className="w-full h-48 bg-zinc-700 flex items-center justify-center text-zinc-500 pointer-events-none">
                         No Image
                       </div>
                     )}
-                    <div className="p-4">
+                    <div className="p-4 pointer-events-none">
                       <h3 className="font-bold text-sm mb-1 truncate">{item.title}</h3>
                       <p className="text-zinc-400 text-xs mb-3 line-clamp-2">{item.description}</p>
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col gap-2 pointer-events-auto">
                         <button
                           onClick={() => {
                             setEditingId(item.id);
